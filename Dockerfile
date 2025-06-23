@@ -8,7 +8,7 @@ RUN apt update -y && \
 
 # ----- Python + PyTorch ----------------------------------------------------
 RUN pip3 install --upgrade pip && \
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # ----- Clone & install apps ------------------------------------------------
 WORKDIR /workspace
