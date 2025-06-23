@@ -8,8 +8,8 @@ RUN apt update -y && \
 
 # ----- Python + PyTorch ----------------------------------------------------
 RUN pip install --upgrade pip && \
-    pip install --index-url https://download.pytorch.org/whl/cu124 \
-                torch==2.2.0+cu124 torchvision==0.17.0+cu124
+    pip install torch==2.2.0+cu124 torchvision==0.17.0+cu124 \
+      -f https://download.pytorch.org/whl/torch_stable.html
 
 # ----- Clone & install apps ------------------------------------------------
 WORKDIR /workspace
