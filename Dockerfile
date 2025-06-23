@@ -16,16 +16,13 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------
-# 2. PyTorch 2.3.0/cu121 wheels that match Python-3.10  (cp310)
-#    (Corrected to use the cu121 index URL for torch 2.3.0)
+# 2. PyTorch 2.3.0 & xformers 0.0.26.post1
+#    (Combined install to use the same CUDA index and reduce layers)
 # --------------------------------------------------------------------
 RUN pip3 install --upgrade pip && \
     pip3 install --index-url https://download.pytorch.org/whl/cu121 \
-        torch==2.3.0+cu121 torchvision==0.18.0+cu121 torchaudio==2.3.0+cu121
-
-# Pre-built xformers wheel that also supports cp310 + cu121
-# Note: The xformers wheel for cu12 should be compatible.
-RUN pip3 install xformers==0.0.26
+        torch==2.3.0+cu121 torchvision==0.18.0+cu121 torchaudio==2.3.0+cu121 \
+        xformers==0.0.26.post1
 
 # Small A1111 runtime dep that isn’t in core wheels
 RUN pip install fastapi==0.90.1
