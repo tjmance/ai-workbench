@@ -8,24 +8,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /workspace
 
 # --------------------------------------------------------------------
-# 1. System packages
+# 1. System packages   (use distro-default Python 3.10)
 # --------------------------------------------------------------------
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        git aria2 wget curl ffmpeg \
-        python3.11 python3.11-venv python3-pip && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1
+        git aria2 wget curl ffmpeg python3 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------
-# 2. Python + PyTorch (binary wheels, no compile)
+# 2. PyTorch 2.3.0/cu124 wheels that match Python-3.10  (cp310)
 # --------------------------------------------------------------------
-RUN pip install --upgrade pip && \
-    pip install --index-url https://download.pytorch.org/whl/cu124 \
+RUN pip3 install --upgrade pip && \
+    pip3 install --index-url https://download.pytorch.org/whl/cu124 \
         torch==2.3.0+cu124 torchvision==0.18.0+cu124 torchaudio==2.3.0+cu124
 
-# Pre-built xformers wheel (works with Torch 2.3 / CUDA 12.x)
-RUN pip install xformers==0.0.26
+# Pre-built xformers wheel that also supports cp310 + cu12
+RUN pip3 install xformers==0.0.26
 
 # Small A1111 runtime dep that isn’t in core wheels
 RUN pip install fastapi==0.90.1
