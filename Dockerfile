@@ -42,22 +42,7 @@ RUN git clone --depth=1 https://github.com/FaceFusion/FaceFusion.git facefusion 
     sed -i '/xformers/d' facefusion/requirements.txt && \
     pip install --no-cache-dir -r facefusion/requirements.txt
 
-# --------------------------------------------------------------------
-# 5. Retrieval-based Voice Conversion (RVC)
-#    (Added sed command to remove numpy pin to avoid conflicts)
-# --------------------------------------------------------------------
-RUN git clone --depth=1 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc && \
-    sed -i '/numpy/d' rvc/requirements.txt && \
-    pip install --no-cache-dir -r rvc/requirements.txt
-
-# --------------------------------------------------------------------
-# 6. Whisper WebUI
-# --------------------------------------------------------------------
-RUN git clone --depth=1 https://github.com/aadnk/whisper-webui.git whisper && \
-    pip install --no-cache-dir -r whisper/requirements.txt
-
-# --------------------------------------------------------------------
-# 7. Model auto-fetcher & launcher
+# 5. Model auto-fetcher & launcher
 # --------------------------------------------------------------------
 COPY fetch_models.sh /usr/local/bin/fetch_models.sh
 RUN chmod +x /usr/local/bin/fetch_models.sh
@@ -65,7 +50,7 @@ RUN chmod +x /usr/local/bin/fetch_models.sh
 COPY launcher.py /workspace/launcher.py
 
 # --------------------------------------------------------------------
-# 8. Networking & start command
+# 6. Networking & start command
 # --------------------------------------------------------------------
 EXPOSE 7000 7860 7870 7900 8899 5901
 CMD ["python3", "/workspace/launcher.py"]
