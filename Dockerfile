@@ -13,10 +13,14 @@ RUN pip3 install --upgrade pip && \
 # ----- Clone & install apps ------------------------------------------------
 WORKDIR /workspace
 
-# 1. AUTOMATIC1111
-RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui a1111 && \
-    pip install -r a1111/requirements_versions.txt && \
-    pip install xformers==0.0.26 --no-binary ":all:"
+# ----- AUTOMATIC1111 -------------------------------------------------------
+RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui a1111
+
+# install only the pieces we need (Torch is already in the image)
+RUN pip install fastapi==0.90.1
+
+# pre-built xformers wheel that matches Torch 2.3 + CUDA 12.4
+RUN pip install xformers==0.0.29.post1 --index-url https://download.pytorch.org/whl/cu124
 
 # 2. FaceFusion (live face-swap)
 RUN git clone --depth=1 https://github.com/FaceFusion/FaceFusion.git facefusion && \
