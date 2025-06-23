@@ -7,9 +7,8 @@ RUN apt update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # ----- Python + PyTorch ----------------------------------------------------
-RUN pip install --upgrade pip && \
-    pip install --index-url https://download.pytorch.org/whl/cu124 \
-                torch==2.3.0+cu124 torchvision==0.18.0+cu124
+RUN pip3 install --upgrade pip && \
+    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 
 # ----- Clone & install apps ------------------------------------------------
 WORKDIR /workspace
