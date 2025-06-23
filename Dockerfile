@@ -9,15 +9,15 @@ WORKDIR /workspace
 
 # --------------------------------------------------------------------
 # 1. System packages   (use distro-default Python 3.10)
+#    (Added libsndfile1 for the RVC dependency 'soundfile')
 # --------------------------------------------------------------------
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        git aria2 wget curl ffmpeg python3 python3-pip && \
+        git aria2 wget curl ffmpeg python3 python3-pip libsndfile1 && \
     rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------
 # 2. PyTorch 2.3.0 & xformers 0.0.26.post1
-#    (Combined install to use the same CUDA index and reduce layers)
 # --------------------------------------------------------------------
 RUN pip3 install --upgrade pip && \
     pip3 install --index-url https://download.pytorch.org/whl/cu121 \
@@ -44,8 +44,10 @@ RUN git clone --depth=1 https://github.com/FaceFusion/FaceFusion.git facefusion 
 
 # --------------------------------------------------------------------
 # 5. Retrieval-based Voice Conversion (RVC)
+#    (Added sed command to remove numpy pin to avoid conflicts)
 # --------------------------------------------------------------------
 RUN git clone --depth=1 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc && \
+    sed -i '/numpy/d' rvc/requirements.txt && \
     pip install --no-cache-dir -r rvc/requirements.txt
 
 # --------------------------------------------------------------------
