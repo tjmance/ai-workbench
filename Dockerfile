@@ -13,7 +13,9 @@ WORKDIR /workspace
 # --------------------------------------------------------------------
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        git aria2 wget curl ffmpeg python3 python3-pip libsndfile1 && \
+        git aria2 wget curl ffmpeg \
+        python3 python3-pip python3-dev build-essential \
+        libsndfile1 && \
     rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------
