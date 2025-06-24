@@ -17,6 +17,13 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/Dockerfile b/Dockerfile
+index 8c1dcec13142058713313fb651e5374109a319cc..2e5a8d2086453e2a7f2b8567f8f2c81e0f46cd2c 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -20,37 +20,51 @@ RUN apt-get update -y && \
+
 # 2. PyTorch 2.3.0 & xformers 0.0.26.post1
 # --------------------------------------------------------------------
 RUN pip3 install --upgrade pip && \
@@ -42,7 +49,21 @@ RUN git clone --depth=1 https://github.com/FaceFusion/FaceFusion.git facefusion 
     sed -i '/xformers/d' facefusion/requirements.txt && \
     pip install --no-cache-dir -r facefusion/requirements.txt
 
-# 5. Model auto-fetcher & launcher
+# --------------------------------------------------------------------
+# 5. Retrieval-based Voice Conversion (RVC)
+#    (remove numpy pin to avoid conflicts)
+# --------------------------------------------------------------------
+RUN git clone --depth=1 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc && \
+    sed -i '/numpy/d' rvc/requirements.txt && \
+    pip install --no-cache-dir -r rvc/requirements.txt
+
+# --------------------------------------------------------------------
+# 6. Whisper WebUI
+# --------------------------------------------------------------------
+RUN git clone --depth=1 https://github.com/aadnk/whisper-webui.git whisper && \
+    pip install --no-cache-dir -r whisper/requirements.txt
+
+# 7. Model auto-fetcher & launcher
 # --------------------------------------------------------------------
 COPY fetch_models.sh /usr/local/bin/fetch_models.sh
 RUN chmod +x /usr/local/bin/fetch_models.sh
@@ -50,7 +71,7 @@ RUN chmod +x /usr/local/bin/fetch_models.sh
 COPY launcher.py /workspace/launcher.py
 
 # --------------------------------------------------------------------
-# 6. Networking & start command
+# 8. Networking & start command
 # --------------------------------------------------------------------
 EXPOSE 7000 7860 7870 7900 8899 5901
 CMD ["python3", "/workspace/launcher.py"]
