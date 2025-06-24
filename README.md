@@ -28,3 +28,13 @@ docker push beasthavoc/ai-workbench:latest
 
 After the first boot (models will auto‑download once) visit
 **https://<POD_URL>/proxy/7000** to access the hub.
+
+### Service ports
+
+| Service           | Port | Example URL                     |
+|-------------------|-----:|---------------------------------|
+| Gradio hub        | 7000 | `/proxy/7000`                   |
+| AUTOMATIC1111     | 7860 | `/proxy/7860`                   |
+| FaceFusion        | 7870 | `/proxy/7870`                   |
+| RVC voice cloning | 7900 | `/proxy/7900`                   |
+| Whisper           | 8899 | `/proxy/8899`                   |
