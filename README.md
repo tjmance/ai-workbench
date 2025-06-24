@@ -23,7 +23,7 @@ docker push beasthavoc/ai-workbench:latest
 |----------------------|---------------------------------|
 | **Container Image**  | `docker.io/beasthavoc/ai-workbench:latest` |
 | **Ports**            | `7000,7860,7870,7900,8899,5901` |
-| **Volume**           | Mount `/workspace/models` (100 GB) |
+| **Volume**           | Mount `/workspace/models` (100 GB) |
 | **Env Vars**         | `HF_TOKEN=<your token>`<br>`CIVITAI_API_KEY=<optional>` |
 
 After the first boot (models will auto‑download once) visit
